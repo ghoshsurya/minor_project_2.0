@@ -23,13 +23,27 @@ class AIOptimizedCVView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         cv_upload = self.get_object()
         
+        # Handle missing analysis data
+        analysis = cv_upload.gemini_analysis or {}
+        missing_sections = cv_upload.missing_sections or []
+        improvements = cv_upload.improvement_suggestions or []
+        keywords = cv_upload.keyword_suggestions or []
+        optimized_content = cv_upload.optimized_content or "AI analysis not yet performed. Please regenerate analysis."
+        match_percentage = cv_upload.job_match_percentage or 0
+        
+        # If no analysis exists, generate default data
+        if not analysis:
+            missing_sections = ['Professional Summary', 'Skills Section', 'Keywords Optimization']
+            improvements = ['Add relevant keywords', 'Improve formatting', 'Enhance job descriptions']
+            keywords = ['Python', 'Django', 'Web Development', 'Problem Solving']
+        
         context.update({
-            'analysis': cv_upload.gemini_analysis,
-            'optimized_content': cv_upload.optimized_content,
-            'missing_sections': cv_upload.missing_sections,
-            'improvements': cv_upload.improvement_suggestions,
-            'keywords': cv_upload.keyword_suggestions,
-            'match_percentage': cv_upload.job_match_percentage
+            'analysis': analysis,
+            'optimized_content': optimized_content,
+            'missing_sections': missing_sections,
+            'improvements': improvements,
+            'keywords': keywords,
+            'match_percentage': match_percentage
         })
         
         return context

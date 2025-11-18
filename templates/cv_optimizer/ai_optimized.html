@@ -4,119 +4,101 @@
 {% block title %}AI Optimized CV - ATS Optimizer{% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0"><i class="fas fa-robot me-2"></i>AI-Optimized CV Analysis</h4>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card border-success">
-                                <div class="card-header bg-success text-white">
-                                    <h5><i class="fas fa-chart-line me-2"></i>ATS Score</h5>
-                                </div>
-                                <div class="card-body text-center">
-                                    <div class="display-4 text-success">{{ cv_upload.ats_score }}%</div>
-                                    <div class="progress mt-3">
-                                        <div class="progress-bar bg-success" style="width: {{ cv_upload.ats_score }}%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card border-info">
-                                <div class="card-header bg-info text-white">
-                                    <h5><i class="fas fa-bullseye me-2"></i>Job Match</h5>
-                                </div>
-                                <div class="card-body text-center">
-                                    <div class="display-4 text-info">{{ match_percentage }}%</div>
-                                    <div class="progress mt-3">
-                                        <div class="progress-bar bg-info" style="width: {{ match_percentage }}%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+        <div class="bg-blue-600 text-white px-6 py-4">
+            <h4 class="text-xl font-bold text-white"><i class="fas fa-robot mr-2"></i>AI-Optimized CV Analysis</h4>
+        </div>
+        <div class="p-6 text-gray-900 dark:text-gray-100">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg overflow-hidden">
+                    <div class="bg-green-600 text-white px-4 py-3">
+                        <h5 class="font-semibold text-white"><i class="fas fa-chart-line mr-2"></i>ATS Score</h5>
                     </div>
-
-                    <div class="row mt-4">
-                        <div class="col-md-4">
-                            <div class="card border-warning">
-                                <div class="card-header bg-warning text-dark">
-                                    <h5><i class="fas fa-exclamation-triangle me-2"></i>Missing Sections</h5>
-                                </div>
-                                <div class="card-body">
-                                    {% if missing_sections %}
-                                        <ul class="list-unstyled">
-                                            {% for section in missing_sections %}
-                                                <li><i class="fas fa-minus-circle text-warning me-2"></i>{{ section }}</li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% else %}
-                                        <p class="text-success"><i class="fas fa-check-circle me-2"></i>All sections present</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card border-primary">
-                                <div class="card-header bg-primary text-white">
-                                    <h5><i class="fas fa-lightbulb me-2"></i>Improvements</h5>
-                                </div>
-                                <div class="card-body">
-                                    <ul class="list-unstyled">
-                                        {% for improvement in improvements %}
-                                            <li class="mb-2"><i class="fas fa-arrow-right text-primary me-2"></i>{{ improvement }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card border-secondary">
-                                <div class="card-header bg-secondary text-white">
-                                    <h5><i class="fas fa-tags me-2"></i>Keyword Suggestions</h5>
-                                </div>
-                                <div class="card-body">
-                                    {% for keyword in keywords %}
-                                        <span class="badge bg-secondary me-1 mb-1">{{ keyword }}</span>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5><i class="fas fa-file-alt me-2"></i>AI-Optimized CV Content</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">
-                                        <pre class="mb-0">{{ optimized_content }}</pre>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4">
-                        <div class="col-12 text-center">
-                            <a href="{% url 'cv_optimizer:ai_download' cv_upload.id %}" class="btn btn-success btn-lg me-3">
-                                <i class="fas fa-download me-2"></i>Download Optimized CV
-                            </a>
-                            <a href="{% url 'cv_optimizer:job_matching' cv_upload.id %}" class="btn btn-primary btn-lg me-3">
-                                <i class="fas fa-search me-2"></i>Find Matching Jobs
-                            </a>
-                            <button class="btn btn-warning btn-lg" onclick="regenerateAnalysis()">
-                                <i class="fas fa-sync-alt me-2"></i>Regenerate Analysis
-                            </button>
+                    <div class="p-6 text-center text-gray-900 dark:text-gray-100">
+                        <div class="text-4xl font-bold text-green-600 dark:text-green-400 mb-4">{{ cv_upload.ats_score }}%</div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                            <div class="bg-green-600 h-3 rounded-full transition-all duration-500" style="width: {{ cv_upload.ats_score }}%"></div>
                         </div>
                     </div>
                 </div>
+                <div class="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg overflow-hidden">
+                    <div class="bg-blue-600 text-white px-4 py-3">
+                        <h5 class="font-semibold text-white"><i class="fas fa-bullseye mr-2"></i>Job Match</h5>
+                    </div>
+                    <div class="p-6 text-center text-gray-900 dark:text-gray-100">
+                        <div class="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-4">{{ match_percentage }}%</div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                            <div class="bg-blue-600 h-3 rounded-full transition-all duration-500" style="width: {{ match_percentage }}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 rounded-lg overflow-hidden">
+                    <div class="bg-yellow-500 text-white px-4 py-3">
+                        <h5 class="font-semibold text-white"><i class="fas fa-exclamation-triangle mr-2"></i>Missing Sections</h5>
+                    </div>
+                    <div class="p-4 text-gray-900 dark:text-gray-100">
+                        {% if missing_sections %}
+                            <ul class="space-y-2">
+                                {% for section in missing_sections %}
+                                    <li class="flex items-center text-gray-900 dark:text-gray-100"><i class="fas fa-minus-circle text-yellow-500 mr-2"></i>{{ section }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-green-600 dark:text-green-400"><i class="fas fa-check-circle mr-2"></i>All sections present</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-lg overflow-hidden">
+                    <div class="bg-blue-600 text-white px-4 py-3">
+                        <h5 class="font-semibold text-white"><i class="fas fa-lightbulb mr-2"></i>Improvements</h5>
+                    </div>
+                    <div class="p-4 text-gray-900 dark:text-gray-100">
+                        <ul class="space-y-2">
+                            {% for improvement in improvements %}
+                                <li class="flex items-start text-gray-900 dark:text-gray-100"><i class="fas fa-arrow-right text-blue-600 dark:text-blue-400 mr-2 mt-1"></i>{{ improvement }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                    <div class="bg-gray-600 text-white px-4 py-3">
+                        <h5 class="font-semibold text-white"><i class="fas fa-tags mr-2"></i>Keyword Suggestions</h5>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex flex-wrap gap-2">
+                            {% for keyword in keywords %}
+                                <span class="bg-gray-600 dark:bg-gray-500 text-white px-3 py-1 rounded-full text-sm">{{ keyword }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden mb-8">
+                <div class="bg-gray-100 dark:bg-gray-700 px-4 py-3">
+                    <h5 class="font-semibold text-gray-800 dark:text-gray-200"><i class="fas fa-file-alt mr-2"></i>AI-Optimized CV Content</h5>
+                </div>
+                <div class="p-4">
+                    <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg max-h-96 overflow-y-auto">
+                        <pre class="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap">{{ optimized_content }}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center space-x-4">
+                <a href="{% url 'cv_optimizer:ai_download' cv_upload.id %}" class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-download mr-2"></i>Download Optimized CV
+                </a>
+                <a href="{% url 'cv_optimizer:job_matching' cv_upload.id %}" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-search mr-2"></i>Find Matching Jobs
+                </a>
+                <button onclick="regenerateAnalysis()" class="inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-sync-alt mr-2"></i>Regenerate Analysis
+                </button>
             </div>
         </div>
     </div>

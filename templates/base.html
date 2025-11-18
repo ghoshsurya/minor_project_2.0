@@ -194,20 +194,22 @@
         const themeIcon = document.getElementById('themeIcon');
         
         if (body.classList.contains('dark-theme')) {
-            body.classList.remove('dark-theme');
+            body.classList.remove('dark-theme', 'dark');
             body.classList.add('light-theme');
             body.style.background = 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)';
             body.style.color = '#000000';
             themeIcon.className = 'fas fa-sun';
             themeIcon.style.color = '#000000';
+            document.documentElement.classList.remove('dark');
             localStorage.setItem('theme', 'light');
         } else {
             body.classList.remove('light-theme');
-            body.classList.add('dark-theme');
+            body.classList.add('dark-theme', 'dark');
             body.style.background = 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)';
             body.style.color = '#ffffff';
             themeIcon.className = 'fas fa-moon';
             themeIcon.style.color = '#ffffff';
+            document.documentElement.classList.add('dark');
             localStorage.setItem('theme', 'dark');
         }
         
@@ -287,24 +289,30 @@
     
     // Load saved theme on page load
     document.addEventListener('DOMContentLoaded', function() {
-        const savedTheme = localStorage.getItem('theme') || 'light';
+        const savedTheme = localStorage.getItem('theme');
         const body = document.body;
         const themeIcon = document.getElementById('themeIcon');
         
-        if (savedTheme === 'dark') {
+        // Use system theme if no saved preference
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = savedTheme === 'dark' || (!savedTheme && systemDark);
+        
+        if (isDark) {
             body.classList.remove('light-theme');
-            body.classList.add('dark-theme');
+            body.classList.add('dark-theme', 'dark');
             body.style.background = 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)';
             body.style.color = '#ffffff';
             themeIcon.className = 'fas fa-moon';
             themeIcon.style.color = '#ffffff';
+            document.documentElement.classList.add('dark');
         } else {
-            body.classList.remove('dark-theme');
+            body.classList.remove('dark-theme', 'dark');
             body.classList.add('light-theme');
             body.style.background = 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)';
             body.style.color = '#000000';
             themeIcon.className = 'fas fa-sun';
             themeIcon.style.color = '#000000';
+            document.documentElement.classList.remove('dark');
         }
         
         updateThemeClasses();

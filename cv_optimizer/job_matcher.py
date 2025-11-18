@@ -21,10 +21,19 @@ class JobMatcher:
             jobs = self._search_jobs(job_title, location, limit)
             job_suggestions = {'job_titles': [job_title]}
         else:
-            # Use Gemini to find matching jobs from CV
-            job_suggestions = self.gemini_analyzer.find_matching_jobs(cv_analysis, location)
+            # Use fallback job suggestions when Gemini is disabled
+            if self.gemini_analyzer.enabled:
+                job_suggestions = self.gemini_analyzer.find_matching_jobs(cv_analysis, location)
+            else:
+                job_suggestions = {
+                    'job_titles': ['Software Developer', 'Web Developer', 'Python Developer'],
+                    'search_keywords': ['python', 'django', 'web development'],
+                    'job_portals': ['LinkedIn', 'Indeed', 'Naukri'],
+                    'application_tips': ['Customize resume', 'Write cover letter']
+                }
+            
             jobs = []
-            for title in job_suggestions.get('job_titles', []):
+            for title in job_suggestions.get('job_titles', ['Software Developer']):
                 portal_jobs = self._search_jobs(title, location, limit//len(job_suggestions.get('job_titles', [1])))
                 jobs.extend(portal_jobs)
         
